@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2020",
+    "sourceMap": true,
+    "types": [
+      "@types/node", "@types/express"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
