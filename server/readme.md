@@ -6,6 +6,8 @@
 npm i express @types/express express-graphql graphql mongoose nodemon ts-node
 
 npm i -D @types/node typescript
+
+npm i cors @types/cors
 ```
 
 ## 使用パッケージ
@@ -19,6 +21,7 @@ npm i -D @types/node typescript
 - ts-node : TypeScript で Node.js をトランスパイルする
 - @types/node : Node.js で typescript を認識できるようにする
 - typescript : Javascript に型情報を付与する
+- cors : クロスドメインの許可
 
 ---
 
