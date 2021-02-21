@@ -3,7 +3,8 @@ import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client'
 import './App.css'
 import Header from './components/Header'
-import Container from '@material-ui/core/Container'
+import Box from '@material-ui/core/Box'
+import SideMenu from './components/SideMenu'
 import MovieList from './components/MovieList'
 
 const client = new ApolloClient({
@@ -17,9 +18,10 @@ const App: React.FC = () => {
     <div className="App">
       <Header></Header>
       <ApolloProvider client={client}>
-        <Container maxWidth="lg">
+        <Box display="flex">
+          <SideMenu />
           <MovieList />
-        </Container>
+        </Box>
       </ApolloProvider>
     </div>
   )

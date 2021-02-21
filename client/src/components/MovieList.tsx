@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
+import Box from '@material-ui/core/Box'
 import { useQuery } from '@apollo/client'
 import { MOVIE_LIST } from '../query/query'
 
@@ -15,16 +16,6 @@ const useStyles = makeStyles({
     minWidth: 650,
   },
 })
-
-// function createData(title: string, genre: string, name: string) {
-//   return { title, genre, name }
-// }
-
-// const rows = [
-//   createData('ET', 'SF', 'スティーブン スピルバーグ'),
-//   createData('HarryPotter', 'SF', 'JKローリング'),
-//   createData('きみの名は', 'Anime', '新海誠'),
-// ]
 
 type Movie = {
   id: string
@@ -45,28 +36,30 @@ const MovieList: React.FC = () => {
     return <p>Error...</p>
   } else {
     return (
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>タイトル</TableCell>
-              <TableCell align="right">ジャンル</TableCell>
-              <TableCell align="right">監督</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.movieList.map((movie: Movie) => (
-              <TableRow key={movie.id}>
-                <TableCell component="th" scope="row">
-                  {movie.name}
-                </TableCell>
-                <TableCell align="right">{movie.genre}</TableCell>
-                <TableCell align="right">{movie.director.name}</TableCell>
+      <Box m={5}>
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>タイトル</TableCell>
+                <TableCell align="right">ジャンル</TableCell>
+                <TableCell align="right">監督</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {data.movieList.map((movie: Movie) => (
+                <TableRow key={movie.id}>
+                  <TableCell component="th" scope="row">
+                    {movie.name}
+                  </TableCell>
+                  <TableCell align="right">{movie.genre}</TableCell>
+                  <TableCell align="right">{movie.director.name}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     )
   }
 }
