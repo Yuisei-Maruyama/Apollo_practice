@@ -10,19 +10,8 @@ import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
-
-// const useStyles = makeStyles({
-//   root: {
-//     minWidth: 275,
-//   },
-//   formControl: {
-//     margin: theme.spacing(1),
-//     minWidth: 120,
-//   },
-//   selectEmpty: {
-//     marginTop: theme.spacing(2),
-//   },
-// })
+import { useQuery } from '@apollo/client'
+import { DIRECTOR_LIST } from '../query/query'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,7 +28,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
+type Director = {
+  id: string
+  name: string
+}
+
 const SideMenu: React.FC = () => {
+  const { data } = useQuery(DIRECTOR_LIST)
   const classes = useStyles()
   const [director, setDirector] = useState('')
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -71,16 +66,17 @@ const SideMenu: React.FC = () => {
               <TextField label="作品名" />
               <TextField label="ジャンル" />
               <CardActions>
-                {/* <Button variant="outlined" color="primary">
-                  追加
-                </Button> */}
                 <FormControl className={classes.formControl}>
                   <InputLabel id="director-select-label">Director</InputLabel>
-                  <Select labelId="director-select-label" id="directorId" value={director} onChange={handleChange}>
-                    <MenuItem value={10}>宮崎駿</MenuItem>
-                    <MenuItem value={20}>宮崎駿</MenuItem>
-                    <MenuItem value={30}>宮崎駿</MenuItem>
+                  <Select labelId="director-select-label" onChange={handleChange}>
+                    {data &&
+                      data.directorList.map((director: Director) => (
+                        <MenuItem key={director.id}>{director.name}</MenuItem>
+                      ))}
                   </Select>
+                  <Button variant="outlined" color="primary">
+                    追加
+                  </Button>
                 </FormControl>
               </CardActions>
             </Box>
