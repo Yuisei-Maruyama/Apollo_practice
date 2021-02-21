@@ -9,7 +9,7 @@ npx create-react-app client --template typescript
 ## 導入
 
 ```
-npm i -D @material-ui/icons @material-ui/core eslint eslint-config-prettier prettier @typescript-eslint/parser @typescript-eslint/eslint-plugin husky lint-staged
+npm i -D @material-ui/icons @material-ui/core eslint eslint-config-prettier prettier @typescript-eslint/parser @typescript-eslint/eslint-plugin husky lint-staged react-hook-form
 
 npm i @apollo/client graphql
 ```
