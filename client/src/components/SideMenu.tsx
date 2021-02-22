@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import { Card, CardContent, CardActions, Button, Box, MenuItem } from '@material-ui/core'
-import { useQuery } from '@apollo/client'
-import { DIRECTOR_LIST } from '../query/query'
+import { useQuery, useMutation } from '@apollo/client'
+import { DIRECTOR_LIST, ADD_MOVIE } from '../query/query'
 import { useForm, Controller } from 'react-hook-form'
 import { Form, Field } from 'react-final-form'
 import { TextField, Select } from 'final-form-material-ui'
+import { isConditionalExpression } from 'typescript'
 
 type Director = {
   id: string
@@ -34,14 +35,17 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const SideMenu: React.FC = () => {
-  const { data } = useQuery(DIRECTOR_LIST)
-  const { register, trigger, handleSubmit, watch, errors } = useForm<InputForm>()
-  const onSubmit = (value: InputForm) => console.log(value)
   const classes = useStyles()
   const [directorName, setDirector] = useState('')
   const [directorAge, setAge] = useState('')
   const [movieName, setMovie] = useState('')
   const [movieGenre, setGenre] = useState('')
+  const { data } = useQuery(DIRECTOR_LIST)
+  const { register, trigger, handleSubmit, watch, errors } = useForm<InputForm>()
+  const [addMovie] = useMutation(ADD_MOVIE)
+  const onSubmit = (value: any) => console.log(value)
+  const onSubmitMovie = (value: any) =>
+    addMovie({ variables: { name: value.MovieName, genre: value.MovieGenre, directorId: value.DirectorId } })
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setDirector(event.target.value as string)
   }
@@ -84,7 +88,7 @@ const SideMenu: React.FC = () => {
       />
 
       <Form
-        onSubmit={onSubmit}
+        onSubmit={onSubmitMovie}
         render={({ handleSubmit, values }) => (
           <form onSubmit={handleSubmit}>
             <Card className={classes.root} variant="outlined">
@@ -108,7 +112,7 @@ const SideMenu: React.FC = () => {
                     />
                     <Field
                       fullWidth
-                      name="DirectorName"
+                      name="DirectorId"
                       component={Select as any}
                       label="監督選択"
                       formControlProps={{ fullWidth: true }}
