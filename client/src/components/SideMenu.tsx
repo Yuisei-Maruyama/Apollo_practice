@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import { Card, CardContent, CardActions, Button, Box, MenuItem } from '@material-ui/core'
+import { Card, CardContent, Button, Box, MenuItem } from '@material-ui/core'
 import { useQuery, useMutation } from '@apollo/client'
-import { DIRECTOR_LIST, ADD_MOVIE } from '../query/query'
+import { DIRECTOR_LIST, ADD_MOVIE, MOVIE_LIST, ADD_DIRECTOR } from '../query/query'
 import { useForm, Controller } from 'react-hook-form'
 import { Form, Field } from 'react-final-form'
 import { TextField, Select } from 'final-form-material-ui'
-import { isConditionalExpression } from 'typescript'
 
 type Director = {
   id: string
@@ -41,11 +40,20 @@ const SideMenu: React.FC = () => {
   const [movieName, setMovie] = useState('')
   const [movieGenre, setGenre] = useState('')
   const { data } = useQuery(DIRECTOR_LIST)
-  const { register, trigger, handleSubmit, watch, errors } = useForm<InputForm>()
-  const [addMovie] = useMutation(ADD_MOVIE)
-  const onSubmit = (value: any) => console.log(value)
-  const onSubmitMovie = (value: any) =>
-    addMovie({ variables: { name: value.MovieName, genre: value.MovieGenre, directorId: value.DirectorId } })
+  const { register, handleSubmit, watch, errors } = useForm<InputForm>()
+  const [addMovie] = useMutation(ADD_MOVIE, { refetchQueries: [{ query: MOVIE_LIST }], awaitRefetchQueries: true })
+  const [addDirector] = useMutation(ADD_DIRECTOR, {
+    refetchQueries: [{ query: DIRECTOR_LIST }],
+    awaitRefetchQueries: true,
+  })
+  const onSubmitDirector = (value: any) =>
+    addDirector({ variables: { name: value.DirectorName, age: parseInt(value.DirectorAge) } })
+  const onSubmitMovie = async (value: any, e: any) =>
+    await addMovie({
+      variables: { name: value.MovieName, genre: value.MovieGenre, directorId: value.DirectorId },
+    }).then(
+      e.target?.reset() // うまくいかない
+    )
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setDirector(event.target.value as string)
   }
@@ -53,7 +61,7 @@ const SideMenu: React.FC = () => {
   return (
     <div>
       <Form
-        onSubmit={onSubmit}
+        onSubmit={onSubmitDirector}
         render={({ handleSubmit, values }) => (
           <form onSubmit={handleSubmit}>
             <Card className={classes.root} variant="outlined">
