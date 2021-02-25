@@ -17,6 +17,7 @@ export const DIRECTOR_LIST = gql`
     directorList {
       id
       name
+      age
     }
   }
 `
@@ -26,6 +27,15 @@ export const ADD_MOVIE = gql`
     addMovie(name: $name, genre: $genre, directorId: $directorId) {
       name
       genre
+    }
+  }
+`
+
+export const ADD_DIRECTOR = gql`
+  mutation($name: String!, $age: Int!) {
+    addDirector(name: $name, age: $age) {
+      name
+      age
     }
   }
 `
