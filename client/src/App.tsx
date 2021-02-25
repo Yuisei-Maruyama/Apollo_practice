@@ -6,6 +6,7 @@ import Header from './components/Header'
 import Box from '@material-ui/core/Box'
 import SideMenu from './components/SideMenu'
 import MovieList from './components/MovieList'
+import DirectorList from './components/DirectorList'
 
 const client = new ApolloClient({
   // https だと動かないので注意！！
@@ -20,7 +21,10 @@ const App: React.FC = () => {
       <ApolloProvider client={client}>
         <Box display="flex">
           <SideMenu />
-          <MovieList />
+          <Box flexDirection="column">
+            <MovieList />
+            <DirectorList />
+          </Box>
         </Box>
       </ApolloProvider>
     </div>
